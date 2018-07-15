@@ -1,0 +1,60 @@
+{
+  "name": "arktippr",
+  "version": "1.0.0",
+  "description": "Reddit tipbot for ARK",
+  "scripts": {
+    "test": "jest --forceExit",
+    "test:watch": "jest --watch",
+    "lint": "eslint ./ --fix",
+    "depcheck": "depcheck ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wownmedia/ArkTippr.git"
+  },
+  "keywords": [
+    "ARK",
+    "tipbot",
+    "Reddit"
+  ],
+  "author": "Cryptology ltd, Hong Kong",
+  "license": "MIT",
+  "bin": {
+    "ark:tippr": "./bin/arktippr"
+  },
+  "bugs": {
+    "url": "https://github.com/wownmedia/ArkTippr/issues"
+  },
+  "homepage": "https://github.com/wownmedia/ArkTippr#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "pino": "^4.17.3",
+    "snoostorm": "0.0.5",
+    "snoowrap": "^1.15.2"
+  },
+  "devDependencies": {
+    "depcheck": "^0.6.9",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "husky": "^0.14.3",
+    "jest": "^23.3.0",
+    "jest-extended": "^0.7.2",
+    "lint-staged": "^7.1.3",
+    "regenerator-runtime": "^0.11.1",
+    "standard": "^11.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  }
+}

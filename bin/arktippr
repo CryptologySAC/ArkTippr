@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+const Reddit = require('../lib/services/reddit.js')
+
+Reddit.initReddit()
