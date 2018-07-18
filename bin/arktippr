@@ -1,5 +1,11 @@
 #!/usr/bin/env node
 
-const Reddit = require('../lib/services/reddit.js')
+const reddit = require('../lib/services/reddit.js')
+const mainnet = require('../lib/utils/mainnet.js')
 
-Reddit.initReddit()
+async function start() {
+    await mainnet.initMainNet()
+    reddit.initReddit(mainnet)
+}
+
+start()

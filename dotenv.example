@@ -1,0 +1,12 @@
+CLIENT_ID=yourRedditAppClientID
+CLIENT_SECRET=yourRedditAppSecret
+REDDIT_USER=yourRedditUsername
+REDDIT_PASS=yourRedditPassword
+
+DB_USER=dbUsername
+DB_HOST=dbHost
+DB_DATABASE=dbDatabase
+DB_PASSWORD=dePassword
+DB_PORT=5432
+
+CRYPTO_PASS=yourSaltToUniquelyEncryptSeeds
