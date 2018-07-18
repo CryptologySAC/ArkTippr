@@ -1,0 +1,62 @@
+'use strict'
+
+const mainnet = require('../../lib/utils/mainnet.js')
+
+describe('mainnet', () => {
+  it('should be an object', () => {
+    expect(mainnet).toBeObject()
+  })
+})
+
+describe('mainnet.initMainNet', () => {
+  it('should be a function', () => {
+    expect(mainnet.initMainNet).toBeFunction()
+  })
+
+  it('should correctly initialize the connection to the Ark mainnet', async () => {
+    await mainnet.initMainNet()
+
+    expect(mainnet.symbol).toBeString()
+  })
+})
+
+describe('mainnet.formatBalance', () => {
+  it('should be a function', () => {
+    expect(mainnet.formatBalance).toBeFunction()
+  })
+
+  it('should return a string for a valid input', () => {
+    const amount = 110000000
+    const formattedBalance = mainnet.formatBalance(amount)
+    expect(formattedBalance).toBeString()
+    expect(formattedBalance).toBe('Ѧ 1.1')
+  })
+
+  it('should return a 0 string for invalid input', () => {
+    const amount = 'abc'
+    const formattedBalance = mainnet.formatBalance(amount)
+    expect(formattedBalance).toBeString()
+    expect(formattedBalance).toBe('Ѧ 0')
+  })
+})
+
+describe('mainnet.getBalance', () => {
+  it('should be a function', () => {
+    expect(mainnet.getBalance).toBeFunction()
+  })
+
+  it('should return a valid balance for a known address', async () => {
+    const address = 'AUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv'
+    const balance = await mainnet.getBalance(address)
+
+    expect(balance).toBeString()
+    expect(balance).toStartWith('Ѧ')
+  })
+
+  it('should return a valid 0 balance for a new or badly formatted address', async () => {
+    const address = 'QUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv'
+    const balance = await mainnet.getBalance(address)
+
+    expect(balance).toBe('Ѧ 0')
+  })
+})
