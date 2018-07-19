@@ -29,14 +29,14 @@ describe('mainnet.formatBalance', () => {
     const amount = 110000000
     const formattedBalance = mainnet.formatBalance(amount)
     expect(formattedBalance).toBeString()
-    expect(formattedBalance).toBe('Ѧ 1.10000000')
+    expect(formattedBalance).toBe('Ѧ1.10000000')
   })
 
   it('should return a 0 string for invalid input', () => {
     const amount = 'abc'
     const formattedBalance = mainnet.formatBalance(amount)
     expect(formattedBalance).toBeString()
-    expect(formattedBalance).toBe('Ѧ 0.00000000')
+    expect(formattedBalance).toBe('Ѧ0.00000000')
   })
 })
 
@@ -45,18 +45,20 @@ describe('mainnet.getBalance', () => {
     expect(mainnet.getBalance).toBeFunction()
   })
 
-  it('should return a valid balance for a known address', async () => {
+  it('should return a valid balance Object for a known address', async () => {
     const address = 'AUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv'
     const balance = await mainnet.getBalance(address)
 
-    expect(balance).toBeString()
-    expect(balance).toStartWith('Ѧ')
+    expect(balance).toBeObject()
+    expect(balance).toContainKeys(['confirmedBalance', 'unConfirmedBalance'])
+    expect(balance.confirmedBalance).toBeString()
+    expect(balance.unConfirmedBalance).toBeString()
   })
 
   it('should return a valid 0 balance for a new or badly formatted address', async () => {
     const address = 'QUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv'
     const balance = await mainnet.getBalance(address)
 
-    expect(balance).toBe('Ѧ 0.00000000')
+    expect(balance).toBeNil()
   })
 })
