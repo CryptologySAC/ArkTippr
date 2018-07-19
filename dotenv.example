@@ -3,6 +3,9 @@ CLIENT_SECRET=yourRedditAppSecret
 REDDIT_USER=yourRedditUsername
 REDDIT_PASS=yourRedditPassword
 
+REDDIT_SUBREDDIT=botSubredditName
+REDDIT_MANAGER=managerUsername
+
 DB_USER=dbUsername
 DB_HOST=dbHost
 DB_DATABASE=dbDatabase

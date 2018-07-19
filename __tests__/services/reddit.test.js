@@ -43,3 +43,9 @@ describe('reddit._sleep', () => {
     expect(reddit._sleep).toBeFunction()
   })
 })
+
+describe('reddit._notifyManager', () => {
+  it('should be a Function', () => {
+    expect(reddit._notifyManager).toBeFunction()
+  })
+})
