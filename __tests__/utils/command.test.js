@@ -40,3 +40,11 @@ describe('command._parseMention', () => {
     expect(command._parseMention).toBeFunction()
   })
 })
+
+describe('command._parseCommand', () => {
+  const command = new Command()
+
+  it('should be a function', () => {
+    expect(command._parseCommand).toBeFunction()
+  })
+})
