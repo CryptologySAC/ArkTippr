@@ -25,9 +25,10 @@ describe('user.getBalance', () => {
     expect(user.getBalance).toBeFunction()
   })
 
-  it('should return Ѧ 0 for an empty balance ', async () => {
+  it('should return 0 for an empty balance ', async () => {
+    mainnet.setBadsender(true)
     const balance = await user.getBalance(mainnet)
-    expect(balance).toBe('Ѧ 0')
+    expect(balance).toBe('0')
   })
 })
 

@@ -11,12 +11,17 @@ class Mainnet {
     network.logger.error = () => { }
 
     this.network = network
+    this.noBalance = false
     await this.network.setNetwork(net)
   }
 
+  setBadsender (status) {
+    this.nobalance = status
+  }
+
   async getBalance (arkAddress) {
-    const balance = arkAddress === 'testAddress' ? 'Ѧ 100' : 'Ѧ 0'
-    return balance
+    const balance = this.nobalance ? '0' : '10000000000'
+    return { confirmedBalance: balance, unConfirmedBalance: balance }
   }
 
   formatBalance (amount) {
@@ -29,6 +34,10 @@ class Mainnet {
     const balance = amount / ArkToshis;
     const symbol = 'Ѧ 0'
     return `${symbol}${balance}`
+  }
+
+  async getFee () {
+    return 10000000
   }
 }
 

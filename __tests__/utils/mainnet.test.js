@@ -59,6 +59,9 @@ describe('mainnet.getBalance', () => {
     const address = 'QUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv'
     const balance = await mainnet.getBalance(address)
 
-    expect(balance).toBeNil()
+    expect(balance).toBeObject()
+    expect(balance).toContainKeys(['confirmedBalance', 'unConfirmedBalance'])
+    expect(balance.confirmedBalance).toBe('0')
+    expect(balance.unConfirmedBalance).toBe('0')
   })
 })

@@ -412,6 +412,37 @@ describe('coinmarketcap.amountToArktoshi', () => {
     expect(arkToshiValue).toBeGreaterThan(0)
   })
 
+  it('should return a valid value for input containg currency aliases ($,€, etc)', async () => {
+    let amount = '10'
+    let currency = '$'
+    let fullCurrency = 'USD'
+    let arkToshiValue = await coinmarketcap.amountToArktoshi(amount, currency)
+    let arkToshiValueFullCurrency = await coinmarketcap.amountToArktoshi(amount, fullCurrency)
+    expect(arkToshiValue).toBeNumber()
+    expect(arkToshiValue).toBeGreaterThan(0)
+    expect(arkToshiValue === arkToshiValueFullCurrency)
+
+    currency = '€'
+    fullCurrency = 'EUR'
+    arkToshiValue = await coinmarketcap.amountToArktoshi(amount, currency)
+    arkToshiValueFullCurrency = await coinmarketcap.amountToArktoshi(amount, fullCurrency)
+    expect(arkToshiValue).toBeNumber()
+    expect(arkToshiValue).toBeGreaterThan(0)
+    expect(arkToshiValue === arkToshiValueFullCurrency)
+
+    arkToshiValue = await coinmarketcap.amountToArktoshi('', amount + currency)
+    arkToshiValueFullCurrency = await coinmarketcap.amountToArktoshi('', amount + fullCurrency)
+    expect(arkToshiValue).toBeNumber()
+    expect(arkToshiValue).toBeGreaterThan(0)
+    expect(arkToshiValue === arkToshiValueFullCurrency)
+
+    arkToshiValue = await coinmarketcap.amountToArktoshi('', currency + amount)
+    arkToshiValueFullCurrency = await coinmarketcap.amountToArktoshi('', fullCurrency + amount)
+    expect(arkToshiValue).toBeNumber()
+    expect(arkToshiValue).toBeGreaterThan(0)
+    expect(arkToshiValue === arkToshiValueFullCurrency)
+  })
+
   it('should return null for bad input', async () => {
     let amount = 'x'
     let currency = 'y'
