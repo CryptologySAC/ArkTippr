@@ -65,3 +65,24 @@ describe('user._generateSecretFromSeed', () => {
     expect(decryptedSeed).toBe(seed)
   })
 })
+
+describe('user.isValidUser', () => {
+  const validUsername = 'arktippr'
+  const badUsername = 'thisusershouldnotexistbadbadbadqwerty'
+  const user = new User(validUsername)
+  const badUser = new User(badUsername)
+
+  it('should be a function', () => {
+    expect(user.isValidUser).toBeFunction()
+  })
+
+  it('should return true if the user is valid', async () => {
+    const result = await user.isValidUser()
+    expect(result).toBeTrue()
+  })
+
+  it('should return false if the user is invalid', async () => {
+    const result = await badUser.isValidUser()
+    expect(result).toBeFalse()
+  })
+})

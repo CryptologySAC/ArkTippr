@@ -48,3 +48,32 @@ describe('command._parseCommand', () => {
     expect(command._parseCommand).toBeFunction()
   })
 })
+
+describe('command._parseSend', () => {
+  const username = 'arktippr'
+  const badUsername = 'thisusershouldnotexistbadbadbadqwerty'
+  const badAmount = 'none'
+  const amount = '1'
+  const currency = 'ARK'
+  const command = new Command()
+
+  it('should be a function', () => {
+    expect(command._parseSend).toBeFunction()
+  })
+
+  it('should return null for invalid username', async () => {
+    const result = await command._parseSend(badUsername, amount, currency)
+    expect(result).toBeNil()
+  })
+
+  it('should return null for valid username and bad amount', async () => {
+    const result = await command._parseSend(username, badAmount, currency)
+    expect(result).toBeNil()
+  })
+
+  it('should return a {amount, currency} object for valid username, amount and currency', async () => {
+    const result = await command._parseSend(username, amount, currency)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['amount', 'currency'])
+  })
+})
