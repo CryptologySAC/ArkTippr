@@ -9,33 +9,6 @@ describe('parser', () => {
   })
 })
 
-describe('parser._commandIndex', () => {
-  it('should be a function', () => {
-    expect(parser._commandIndex).toBeFunction()
-  })
-
-  it('should return a number', () => {
-    const needle = 'findThis'
-    let bodyParts = ['0', '1', needle, '3', '4']
-    let result = parser._commandIndex(needle, bodyParts)
-    expect(result).toBeNumber()
-    expect(result).toBe(2)
-
-    bodyParts = ['0', '1', 'findThis.itIsHere', '3', '4']
-    result = parser._commandIndex(needle, bodyParts)
-    expect(result).toBeNumber()
-    expect(result).toBe(2)
-  })
-
-  it('should return -1 if not found', () => {
-    const needle = 'findThis'
-    let bodyParts = ['0', '1', '2', '3', '4']
-    let result = parser._commandIndex(needle, bodyParts)
-    expect(result).toBeNumber()
-    expect(result).toBe(-1)
-  })
-})
-
 describe('parser.parseAmount', () => {
   it('should be a function', () => {
     expect(parser.parseAmount).toBeFunction()
@@ -151,6 +124,109 @@ describe('parser.parseMention', () => {
   })
 })
 
+describe('parser.parseCommand', () => {
+  it('should be a function', () => {
+    expect(parser.parseCommand).toBeFunction()
+  })
+
+  it('should return null for invalid input', async () => {
+    let badBody
+
+    // undefined body
+    let result = await parser.parseCommand(badBody)
+    expect(result).toBeNil()
+
+    // Only a mention
+    badBody = 'u/arktippr'
+    result = await parser.parseCommand(badBody)
+    expect(result).toBeNil()
+
+    // Not a valid command
+    badBody = 'anything that is not valid for u/arktippr We just messaged him'
+    result = await parser.parseCommand(badBody)
+    expect(result).toBeNil()
+  })
+
+  it('should return an Array of commands for a valid input', async () => {
+    let body = 'stickers'
+    let command = 'STICKERS'
+    let result = await parser.parseCommand(body)
+    expect(result).toBeArray()
+    expect(result[0]).toContainKey('command')
+    expect(result[0].command).toBe(command)
+
+    body = 'stickers arktippr'
+    let username = 'arktippr'
+    result = await parser.parseCommand(body)
+    expect(result).toBeArray()
+    expect(result[0]).toContainKeys(['command', 'username'])
+    expect(result[0].command).toBe(command)
+    expect(result[0].username).toBe(username)
+
+    body = 'stickers u/arktippr'
+    result = await parser.parseCommand(body)
+    expect(result).toBeArray()
+    expect(result[0]).toContainKeys(['command', 'username'])
+    expect(result[0].command).toBe(command)
+    expect(result[0].username).toBe(username)
+
+    command = 'SEND'
+    body = 'send u/arktippr 10 USD'
+    result = await parser.parseCommand(body)
+    expect(result).toBeArray()
+    expect(result[0]).toContainKeys(['command', 'username', 'arkToshiValue'])
+    expect(result[0].command).toBe(command)
+    expect(result[0].username).toBe(username)
+    expect(result[0].arkToshiValue).not.toBeNil()
+
+    body = 'send u/arktippr 11 USD send u/arktippr 20USD ARK'
+    result = await parser.parseCommand(body)
+    expect(result).toBeArray()
+    expect(result[0]).toContainKeys(['command', 'username', 'arkToshiValue'])
+    expect(result[0].command).toBe(command)
+    expect(result[0].username).toBe(username)
+    expect(result[0].arkToshiValue).not.toBeNil()
+
+    // body = 'send u/arktippr 10USD ARK'
+    // result = await parser.parseCommand(body)
+    // expect(result).toBeArray()
+    expect(result[1]).toContainKeys(['command', 'username', 'arkToshiValue'])
+    expect(result[1].command).toBe(command)
+    expect(result[1].username).toBe(username)
+    expect(result[1].arkToshiValue).not.toBeNil()
+    expect(result[1]).toBe('s')
+  })
+})
+
+/*
+
+describe('parser._commandIndex', () => {
+  it('should be a function', () => {
+    expect(parser._commandIndex).toBeFunction()
+  })
+
+  it('should return a number', () => {
+    const needle = 'findThis'
+    let bodyParts = ['0', '1', needle, '3', '4']
+    let result = parser._commandIndex(needle, bodyParts)
+    expect(result).toBeNumber()
+    expect(result).toBe(2)
+
+    bodyParts = ['0', '1', 'findThis.itIsHere', '3', '4']
+    result = parser._commandIndex(needle, bodyParts)
+    expect(result).toBeNumber()
+    expect(result).toBe(2)
+  })
+
+  it('should return -1 if not found', () => {
+    const needle = 'findThis'
+    let bodyParts = ['0', '1', '2', '3', '4']
+    let result = parser._commandIndex(needle, bodyParts)
+    expect(result).toBeNumber()
+    expect(result).toBe(-1)
+  })
+})
+
 describe('parser.validateInput', () => {
   it('should be a function', () => {
     expect(parser.validateInput).toBeFunction()
@@ -204,7 +280,7 @@ describe('parser._checkCommand', () => {
 
   it('should return a valid command for DONATE', async () => {
     const command = 'DONATE'
-    const bodyParts = [command, 'arktippr', '10', 'ARK']
+    const bodyParts = [command, '10', 'ARK']
     let result = await parser._checkCommand(command, bodyParts)
     expect(result).toBeObject()
     expect(result).toContainKeys(['command', 'username', 'arkToshiValue'])
@@ -236,12 +312,4 @@ describe('parser._checkCommand', () => {
   })
 })
 
-describe('parser.parseCommand', () => {
-  it('should be a function', () => {
-    expect(parser.parseCommand).toBeFunction()
-  })
-
-  it('should be test', () => {
-    expect(false).toBeTrue()
-  })
-})
+*/

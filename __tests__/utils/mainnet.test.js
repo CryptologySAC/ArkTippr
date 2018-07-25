@@ -20,26 +20,6 @@ describe('mainnet.initMainNet', () => {
   })
 })
 
-describe('mainnet.formatBalance', () => {
-  it('should be a function', () => {
-    expect(mainnet.formatBalance).toBeFunction()
-  })
-
-  it('should return a string for a valid input', () => {
-    const amount = 110000000
-    const formattedBalance = mainnet.formatBalance(amount)
-    expect(formattedBalance).toBeString()
-    expect(formattedBalance).toBe('Ѧ1.10000000')
-  })
-
-  it('should return a 0 string for invalid input', () => {
-    const amount = 'abc'
-    const formattedBalance = mainnet.formatBalance(amount)
-    expect(formattedBalance).toBeString()
-    expect(formattedBalance).toBe('Ѧ0.00000000')
-  })
-})
-
 describe('mainnet.getBalance', () => {
   it('should be a function', () => {
     expect(mainnet.getBalance).toBeFunction()
@@ -63,5 +43,43 @@ describe('mainnet.getBalance', () => {
     expect(balance).toContainKeys(['confirmedBalance', 'unConfirmedBalance'])
     expect(balance.confirmedBalance).toBe('0')
     expect(balance.unConfirmedBalance).toBe('0')
+  })
+})
+
+describe('mainnet.getFee', () => {
+  it('should be a function', () => {
+    expect(mainnet.getFee).toBeFunction()
+  })
+
+  it('should return a correct network transaction fee', async () => {
+    const fee = await mainnet.getFee()
+    expect(fee).toBeNumber()
+    expect(fee).toBeGreaterThanOrEqual(0)
+  })
+})
+
+describe('mainnet.formatBalance', () => {
+  it('should be a function', () => {
+    expect(mainnet.formatBalance).toBeFunction()
+  })
+
+  it('should return a string for a valid input', () => {
+    const amount = 110000000
+    const formattedBalance = mainnet.formatBalance(amount)
+    expect(formattedBalance).toBeString()
+    expect(formattedBalance).toBe('Ѧ1.10000000')
+  })
+
+  it('should return a 0 string for invalid input', () => {
+    const amount = 'abc'
+    const formattedBalance = mainnet.formatBalance(amount)
+    expect(formattedBalance).toBeString()
+    expect(formattedBalance).toBe('Ѧ0.00000000')
+  })
+})
+
+describe('mainnet.send', () => {
+  it('should be a function', () => {
+    expect(mainnet.send).toBeFunction()
   })
 })
