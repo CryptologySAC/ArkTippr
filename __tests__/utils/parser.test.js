@@ -2,6 +2,7 @@
 
 const Parser = require('../../lib/utils/parser.js')
 const parser = new Parser()
+const _CURRENCIES = ['ARK', 'Ѧ', 'USD', '$', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 'EUR', '€', 'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'ZAR', 'BTC', 'ETH', 'XRP', 'LTC', 'BCH']
 
 describe('parser', () => {
   it('should be an object', () => {
@@ -58,18 +59,40 @@ describe('parser.parseAmount', () => {
     expect(result).toBe(0)
   })
 
-  it('should return a number > 0 for correct input', async () => {
+  it('should return 100000000 for correct input with 1', async () => {
     const amount = '1'
-    let currency = 'ARK'
-    const expected = 100000000
+    let currency
     let result = await parser.parseAmount(amount, currency)
-    expect(result).toBe(expected)
+    expect(result).toBe(100000000)
 
-    currency = 'USD'
+    currency = 'ARK'
     result = await parser.parseAmount(amount, currency)
-    expect(result).toBeNumber()
-    expect(result).toBeGreaterThan(0)
+    expect(result).toBe(100000000)
   })
+
+  let undefinedVar
+  const amount = '1'
+  for (let item in _CURRENCIES) {
+    let currency = _CURRENCIES[item]
+
+    it(`should return a number > 0 for correct input with ${currency}`, async () => {
+      let result = await parser.parseAmount(amount, currency)
+      expect(result).toBeNumber()
+      expect(result).toBeGreaterThan(0)
+
+      result = await parser.parseAmount(currency, amount)
+      expect(result).toBeNumber()
+      expect(result).toBeGreaterThan(0)
+
+      result = await parser.parseAmount(currency + amount, undefinedVar)
+      expect(result).toBeNumber()
+      expect(result).toBeGreaterThan(0)
+
+      result = await parser.parseAmount(amount + currency, undefinedVar)
+      expect(result).toBeNumber()
+      expect(result).toBeGreaterThan(0)
+    })
+  }
 })
 
 describe('parser.parseMention', () => {
@@ -91,6 +114,18 @@ describe('parser.parseMention', () => {
 
     // Not a valid command
     badBody = 'anything that is not valid for u/arktippr We just mentioned him'
+    result = await parser.parseMention(badBody)
+    expect(result).toBeNil()
+
+    badBody = '10 for u/arktippr'
+    result = await parser.parseMention(badBody)
+    expect(result).toBeNil()
+
+    badBody = '10 nocurrency u/arktippr'
+    result = await parser.parseMention(badBody)
+    expect(result).toBeNil()
+
+    badBody = '10nocurrency u/arktippr'
     result = await parser.parseMention(badBody)
     expect(result).toBeNil()
   })
@@ -119,8 +154,138 @@ describe('parser.parseMention', () => {
     body = '10 USD u/arktippr'
     result = await parser.parseMention(body)
     expect(result).toBeObject()
-    expect(result).toContainKey('command')
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
     expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = '10USD u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = 'USD 10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = 'USD10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = '$ 10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = '$10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = '10 $ u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = '10$ u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBeGreaterThanOrEqual(0)
+
+    body = '10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = 'something 10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = 'ARK10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = '10ARK u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = '10 ARK u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = 'Ѧ10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = 'Ѧ 10 u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = '10Ѧ u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
+
+    body = '10 Ѧ u/arktippr'
+    result = await parser.parseMention(body)
+    expect(result).toBeObject()
+    expect(result).toContainKeys(['command', 'arkToshiValue'])
+    expect(result.command).toBe(command)
+    expect(result.arkToshiValue).not.toBeNil()
+    expect(result.arkToshiValue).toBe(1000000000)
   })
 })
 
@@ -186,19 +351,12 @@ describe('parser.parseCommand', () => {
     expect(result[0].command).toBe(command)
     expect(result[0].username).toBe(username)
     expect(result[0].arkToshiValue).not.toBeNil()
-
-    // body = 'send u/arktippr 10USD ARK'
-    // result = await parser.parseCommand(body)
-    // expect(result).toBeArray()
     expect(result[1]).toContainKeys(['command', 'username', 'arkToshiValue'])
     expect(result[1].command).toBe(command)
     expect(result[1].username).toBe(username)
     expect(result[1].arkToshiValue).not.toBeNil()
-    expect(result[1]).toBe('s')
   })
 })
-
-/*
 
 describe('parser._commandIndex', () => {
   it('should be a function', () => {
@@ -312,4 +470,8 @@ describe('parser._checkCommand', () => {
   })
 })
 
-*/
+describe('parser._parseArguments', () => {
+  it('should be a function', () => {
+    expect(parser._parseArguments).toBeFunction()
+  })
+})

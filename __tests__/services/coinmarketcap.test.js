@@ -421,20 +421,20 @@ describe('coinmarketcap._getARKTicker', () => {
   })
 })
 
-describe('coinmarketcap.__parseAmountCurrency', () => {
+describe('coinmarketcap.parseAmountCurrency', () => {
   it('should be a function', () => {
-    expect(coinmarketcap.__parseAmountCurrency).toBeFunction()
+    expect(coinmarketcap.parseAmountCurrency).toBeFunction()
   })
 
   it('should return false for bad input', () => {
     const input = 'clearlyNotCurrency'
-    expect(coinmarketcap.__parseAmountCurrency(input)).toBeFalse()
+    expect(coinmarketcap.parseAmountCurrency(input)).toBeFalse()
   })
 
   it('should return a {amount, currency} object with currency = ARK for numerical input', () => {
     const input = '1.1'
     const amount = parseFloat(input)
-    const amountCurrency = coinmarketcap.__parseAmountCurrency(input)
+    const amountCurrency = coinmarketcap.parseAmountCurrency(input)
     expect(amountCurrency).toBeObject()
     expect(amountCurrency).toContainKeys(['amount', 'currency'])
     expect(amountCurrency.currency).toBe('ARK')
@@ -446,8 +446,8 @@ describe('coinmarketcap.__parseAmountCurrency', () => {
     const inputCurrencyLast = '1.1USD'
     const inputCurrencyFirst = 'USD1.1'
     const amount = '1.1'
-    const amountCurrencyLast = coinmarketcap.__parseAmountCurrency(inputCurrencyLast)
-    const amountCurrencyFirst = coinmarketcap.__parseAmountCurrency(inputCurrencyFirst)
+    const amountCurrencyLast = coinmarketcap.parseAmountCurrency(inputCurrencyLast)
+    const amountCurrencyFirst = coinmarketcap.parseAmountCurrency(inputCurrencyFirst)
     expect(amountCurrencyLast).toBeObject()
     expect(amountCurrencyLast).toContainKeys(['amount', 'currency'])
     expect(amountCurrencyLast.currency).toBe('USD')
