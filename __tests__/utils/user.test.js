@@ -126,7 +126,7 @@ describe('user._createNewWallet', () => {
 
   it('should return a wallet', () => {
     const wallet = user._createNewWallet()
-    expect(wallet).toContainKeys(['address', 'seed', 'wif'])
+    expect(wallet).toContainKeys(['address', 'seed'])
   })
 })
 
