@@ -104,3 +104,72 @@ describe('user._generateSecretFromSeed', () => {
     expect(decryptedSeed).toBe(seed)
   })
 })
+
+describe('user._createUser', () => {
+  const user = new User()
+  it('should be a function', () => {
+    expect(user._createUser).toBeFunction()
+  })
+
+  it('should add to the DB and return a new user', async () => {
+    const newUsername = `ArkCreateUser${Date.now()}`
+    let result = await user._createUser(newUsername)
+    expect(result).toContainKeys(['address', 'seed', 'username'])
+  })
+})
+
+describe('user._createNewWallet', () => {
+  const user = new User()
+  it('should be a function', () => {
+    expect(user._createNewWallet).toBeFunction()
+  })
+
+  it('should return a wallet', () => {
+    const wallet = user._createNewWallet()
+    expect(wallet).toContainKeys(['address', 'seed', 'wif'])
+  })
+})
+
+const newUsername = `ArkTipprTest${Date.now()}`
+describe('user.getAddress', () => {
+  const user = new User()
+  it('should be a function', () => {
+    expect(user.getAddress).toBeFunction()
+  })
+
+  it('should return an address for a new user', async () => {
+    const user = new User()
+    let result = await user.getAddress(newUsername)
+
+    expect(result).toBeString()
+    expect(result).toHaveLength(34)
+
+    const knownUser = 'arktippr'
+    result = await user.getAddress(knownUser)
+
+    expect(result).toBeString()
+    expect(result).toHaveLength(34)
+  })
+})
+
+describe('user.getSeed', () => {
+  const user = new User()
+  it('should be a function', () => {
+    expect(user.getSeed).toBeFunction()
+  })
+
+  it('should return a seed for a known user', async () => {
+    const user = new User()
+    let result = await user.getSeed(newUsername)
+
+    expect(result).toBeString()
+  })
+
+  it('should return a seed for a new user', async () => {
+    const newUsername = `ArkTipprTest${Date.now()}`
+    const user = new User()
+    let result = await user.getSeed(newUsername)
+
+    expect(result).toBeString()
+  })
+})
