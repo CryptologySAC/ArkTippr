@@ -69,3 +69,18 @@ describe('stickers._sendReply', () => {
     expect(send._sendReply).toBeFunction()
   })
 })
+
+describe('stickers.sendMentionReply', () => {
+  const sender = 'arktippr'
+  let receiver = 'marcs1970'
+  let send = new Stickers(sender, receiver, mainnet)
+
+  it('should be a function', () => {
+    expect(send.sendMentionReply).toBeFunction()
+  })
+
+  it('should return undefined if no transactionId is defined', async () => {
+    const result = await send.sendMentionReply('nothingreal')
+    expect(result).not.toBeDefined()
+  })
+})
