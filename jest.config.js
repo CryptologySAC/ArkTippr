@@ -14,5 +14,6 @@ module.exports = {
     '!**/node_modules/**'
   ],
   watchman: false,
-  setupTestFrameworkScriptFile: 'jest-extended'
+  setupTestFrameworkScriptFile: 'jest-extended',
+  testEnvironment: 'node'
 }
