@@ -2,6 +2,7 @@
 
 const coinmarketcap = require('../../lib/services/coinmarketcap.js')
 const ArkToshis = 100000000
+const _CURRENCIES = ['ARK', 'Ѧ', 'USD', '$', 'AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 'EUR', '€', 'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'ZAR', 'BTC', 'ETH', 'XRP', 'LTC', 'BCH']
 
 describe('coinmarketcap', () => {
   it('should be an object', () => {
@@ -433,13 +434,11 @@ describe('coinmarketcap.parseAmountCurrency', () => {
 
   it('should return a {amount, currency} object with currency = ARK for numerical input', () => {
     const input = '1.1'
-    const amount = parseFloat(input)
     const amountCurrency = coinmarketcap.parseAmountCurrency(input)
     expect(amountCurrency).toBeObject()
     expect(amountCurrency).toContainKeys(['amount', 'currency'])
     expect(amountCurrency.currency).toBe('ARK')
-    expect(amountCurrency.amount).toBeNumber()
-    expect(amountCurrency.amount).toBe(amount)
+    expect(amountCurrency.amount).toBe(input)
   })
 
   it('should return a {amount, currency} object with currency for <amount><currency> or <currency><amount> input', () => {
@@ -457,5 +456,26 @@ describe('coinmarketcap.parseAmountCurrency', () => {
     expect(amountCurrencyFirst).toContainKeys(['amount', 'currency'])
     expect(amountCurrencyFirst.currency).toBe('USD')
     expect(amountCurrencyFirst.amount).toBe(amount)
+  })
+})
+
+describe('coinmarketcap.isCurrency', () => {
+  it('should be a function', () => {
+    expect(coinmarketcap.isCurrency).toBeFunction()
+  })
+
+  it('should return true for valid currencies', () => {
+    for (let item in _CURRENCIES) {
+      let result = coinmarketcap.isCurrency(_CURRENCIES[item])
+      expect(result).toBeTrue()
+    }
+  })
+
+  it('should return false for bad currencies', () => {
+    let result = coinmarketcap.isCurrency('10')
+    expect(result).toBeFalse()
+
+    result = coinmarketcap.isCurrency('BAD')
+    expect(result).toBeFalse()
   })
 })
