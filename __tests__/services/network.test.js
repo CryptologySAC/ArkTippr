@@ -1,9 +1,6 @@
 'use strict'
 
 const network = require('../../lib/services/network.js')
-network.logger.info = () => { }
-network.logger.warn = () => { }
-network.logger.error = () => { }
 
 describe('network', () => {
   it('should be an object', () => {
@@ -165,6 +162,17 @@ describe('network.getFromNode', () => {
 describe('network.findAvailablePeers', () => {
   it('should be a function', () => {
     expect(network.findAvailablePeers).toBeFunction()
+  })
+
+  it('should find responsive peers', async () => {
+    const net = 'mainnet'
+    await network.setNetwork(net)
+    await network.setServer('34.247.65.253:4001')
+    const response = await network.getFromNode('/api/loader/autoconfigure')
+    network.network.config = response.data.network
+    await network.connect(net)
+    const result = await network.findAvailablePeers()
+    expect(result).toBeNumber()
   })
 })
 
