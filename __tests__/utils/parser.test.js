@@ -1,4 +1,5 @@
 'use strict'
+jest.setTimeout(30000)
 
 const Parser = require('../../lib/utils/parser.js')
 const parser = new Parser()
@@ -672,7 +673,7 @@ it('should return an Array of commands for a valid DONATE input', async () => {
     expect(result[0].arkToshiValue).not.toBeNil()
   })
 
-  it('should return an Array of commands for a valid SEND input', async () => {
+  it('should return an Array of commands for a valid SEND input I', async () => {
     const username = 'marcs1970'
     let command = 'SEND'
     let body = 'SEND marcs1970 10 BTC'
@@ -739,9 +740,13 @@ it('should return an Array of commands for a valid DONATE input', async () => {
     expect(result[0].command).toBe(command)
     expect(result[0].username).toBe(username)
     expect(result[0].arkToshiValue).not.toBeNil()
+})
 
-    body = 'SEND marcs1970 10'
-    result = await parser.parseCommand(body)
+ it('should return an Array of commands for a valid SEND input II', async () => {
+    const username = 'marcs1970'
+    let command = 'SEND'
+    let body = 'SEND marcs1970 10'
+    let result = await parser.parseCommand(body)
     expect(result).toBeArray()
     expect(result[0]).toContainKeys(['command', 'username', 'arkToshiValue'])
     expect(result[0].command).toBe(command)

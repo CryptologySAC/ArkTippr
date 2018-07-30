@@ -67,14 +67,14 @@ describe('mainnet.formatBalance', () => {
     const amount = 110000000
     const formattedBalance = mainnet.formatBalance(amount)
     expect(formattedBalance).toBeString()
-    expect(formattedBalance).toBe('Ѧ1.10000000')
+    expect(formattedBalance).toBe('Ѧ1.1')
   })
 
   it('should return a 0 string for invalid input', () => {
     const amount = 'abc'
     const formattedBalance = mainnet.formatBalance(amount)
     expect(formattedBalance).toBeString()
-    expect(formattedBalance).toBe('Ѧ0.00000000')
+    expect(formattedBalance).toBe('Ѧ0')
   })
 })
 
