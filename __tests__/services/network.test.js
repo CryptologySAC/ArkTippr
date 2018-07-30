@@ -1,4 +1,5 @@
 'use strict'
+jest.setTimeout(30000)
 
 const network = require('../../lib/services/network.js')
 

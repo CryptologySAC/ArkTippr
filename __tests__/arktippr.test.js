@@ -1,5 +1,11 @@
 'use strict'
 
+describe('enter procedure tests here', () => {
+  it('should be removed when you are done', () => {
+    expect(true).not.toBeFalse()
+  })
+})
+
 /* USE THIS FILE TO TRY OUT ANYTHING WHEN BUG FIXING */
 
 /*
