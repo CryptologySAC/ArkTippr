@@ -27,7 +27,7 @@ describe('inbox._getUnreads', () => {
 
   it('should return an array of validinbox items', async () => {
     const result = await inbox._getUnreads()
-    expect(result).toBe('s')
+    expect(result).toBeArray()
   })
 })
 
