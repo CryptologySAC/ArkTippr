@@ -38,7 +38,8 @@
     "lodash": "^4.17.10",
     "pg": "^7.4.3",
     "pino": "^4.17.3",
-    "snoowrap": "^1.15.2"
+    "snoowrap": "^1.15.2",
+    "twilio": "^3.19.1"
   },
   "devDependencies": {
     "depcheck": "^0.6.9",
