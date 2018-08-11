@@ -17,21 +17,18 @@ describe('help', () => {
 })
 
 describe('help.sendHelp', () => {
-
   it('should be a function', () => {
     expect(helpReddit.sendHelp).toBeFunction()
   })
 })
 
 describe('help.__sendReddit', () => {
-
   it('should be a function', () => {
     expect(helpReddit.__sendReddit).toBeFunction()
   })
 })
 
 describe('help.__sendWhatsApp', () => {
-
   it('should be a function', () => {
     expect(helpWhatsApp.__sendWhatsApp).toBeFunction()
   })

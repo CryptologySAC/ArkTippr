@@ -1,6 +1,6 @@
 'use strict'
 
-const User = require('../../lib/utils/user.js')
+const User = require('../../lib/utils/user/user.js')
 const mainnet = require('../__support__/mainnet.js')
 
 describe('user', () => {
