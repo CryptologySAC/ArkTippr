@@ -10,11 +10,11 @@ describe('balance', () => {
   })
 })
 
-describe('balance.sendBalance', () => {
+describe('balance.sendHelp', () => {
   const username = 'marcs1970'
   const balance = new Balance(username, mainnet)
 
   it('should be a function', () => {
-    expect(balance.sendBalance).toBeFunction()
+    expect(balance.sendHelp).toBeFunction()
   })
 })

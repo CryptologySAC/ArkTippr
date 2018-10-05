@@ -167,24 +167,6 @@ describe('messages.transactionReceiveMessage', () => {
   })
 })
 
-describe('messages.transactionDonationMessage', () => {
-  it('should be a function', () => {
-    expect(messages.transactionDonationMessage).toBeFunction()
-  })
-
-  it('should return a valid string', () => {
-    const amount = '1.2'
-    const usdValue = '2.1'
-    const txID = 'mytransactionID'
-    const result = messages.transactionDonationMessage(amount, usdValue, txID)
-    expect(result).toBeString()
-    expect(result).toInclude(amount)
-    expect(result).toInclude(usdValue)
-    expect(result).toInclude(txID)
-    expect(result).not.toInclude('undefined')
-  })
-})
-
 describe('messages.transactionWithdrawMessage', () => {
   it('should be a function', () => {
     expect(messages.transactionWithdrawMessage).toBeFunction()
@@ -278,18 +260,6 @@ describe('messages.helpMessage', () => {
   })
 })
 
-describe('messages.voteMessage', () => {
-  it('should be a function', () => {
-    expect(messages.voteMessage).toBeFunction()
-  })
-
-  it('should return a valid string', () => {
-    const result = messages.voteMessage()
-    expect(result).toBeString()
-    expect(result).not.toInclude('undefined')
-  })
-})
-
 describe('messages.helpTipMessage', () => {
   it('should be a function', () => {
     expect(messages.helpTipMessage).toBeFunction()
@@ -321,18 +291,6 @@ describe('messages.helpSendMessage', () => {
 
   it('should return a valid string', () => {
     const result = messages.helpSendMessage()
-    expect(result).toBeString()
-    expect(result).not.toInclude('undefined')
-  })
-})
-
-describe('messages.helpDonateMessage', () => {
-  it('should be a function', () => {
-    expect(messages.helpDonateMessage).toBeFunction()
-  })
-
-  it('should return a valid string', () => {
-    const result = messages.helpDonateMessage()
     expect(result).toBeString()
     expect(result).not.toInclude('undefined')
   })

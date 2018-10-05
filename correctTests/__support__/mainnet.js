@@ -28,7 +28,7 @@ class Mainnet {
   }
 
   async getBalance () {
-    const balance = this.nobalance ? '0' : '50000000000000000'
+    const balance = this.nobalance ? '0' : '5'
     return { confirmedBalance: balance, unConfirmedBalance: this.unconfirmedBalance }
   }
 

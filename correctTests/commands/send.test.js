@@ -44,7 +44,7 @@ describe('sender.sendTransaction', () => {
   const sendToSelf = new Send(sender, sender, arktoshis, mainnet, platform, receiverPlatform)
   it('should return false for a transaction where user and receiver are the same', async () => {
     const result = await sendToSelf.sendTransaction()
-    expect(result).toBeFalse(result)
+    expect().toBeFalse(result)
   })
 })
 

@@ -880,7 +880,7 @@ describe('parser._checkCommand', () => {
   })
 
   it('should return a "help" command object when message requesting help received', async () => {
-    const _COMMANDS = ['BALANCE', 'DEPOSIT', 'WITHDRAW', 'SEND', 'VOTE', 'HELP', 'ADDRESS', 'DONATE', 'STICKERS', 'TIP']
+    const _COMMANDS = ['BALANCE', 'DEPOSIT', 'WITHDRAW', 'SEND', 'HELP', 'ADDRESS', 'CURRENCIES', 'STICKERS', 'TIP']
     for (let item in _COMMANDS) {
       let command = _COMMANDS[item]
       const bodyParts = [command, 'nothingNoUsername...', 'interesting', 'here']
@@ -897,17 +897,6 @@ describe('parser._checkCommand', () => {
   it('should return a valid command for SEND', async () => {
     const command = 'SEND'
     const bodyParts = [command, 'arktippr', '10', 'ARK']
-    let result = await parser._checkCommand(command, bodyParts)
-    expect(result).toBeObject()
-    expect(result).toContainKeys(['command', 'username', 'arkToshiValue'])
-    expect(result).not.toContainKey('address')
-    expect(result.command).toBe(command)
-    expect(result.arkToshiValue).toBeNumber()
-  })
-
-  it('should return a valid command for DONATE', async () => {
-    const command = 'DONATE'
-    const bodyParts = [command, '10', 'ARK']
     let result = await parser._checkCommand(command, bodyParts)
     expect(result).toBeObject()
     expect(result).toContainKeys(['command', 'username', 'arkToshiValue'])

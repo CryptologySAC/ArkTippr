@@ -9,11 +9,11 @@ describe('deposit', () => {
   })
 })
 
-describe('deposit.sendDeposit', () => {
+describe('deposit.sendHelp', () => {
   const username = 'marcs1970'
   const deposit = new Deposit(username)
 
   it('should be a function', () => {
-    expect(deposit.sendDeposit).toBeFunction()
+    expect(deposit.sendHelp).toBeFunction()
   })
 })
