@@ -29,7 +29,7 @@
   "dependencies": {
     "@arkecosystem/crypto": "^0.1.2",
     "axios": "^0.18.0",
-    "bignumber": "^1.1.0",
+    "bignumber.js": "^7.2.1",
     "bip39": "^2.5.0",
     "dotenv": "^6.0.0",
     "is-reachable": "^2.4.0",
