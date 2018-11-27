@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const reddit = require('../lib/platforms/reddit/inbox.js')
+const reddit = require('../lib/platforms/reddit/inbox')
 
 async function start() {
   reddit.initReddit()
