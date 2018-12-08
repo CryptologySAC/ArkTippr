@@ -44,11 +44,19 @@ async function fill() {
 
 async function vote() {
   // Retrieve all usernames from the DB
-  
-  // check if it has a vote already
+  let result = await database.query('SELECT seed FROM users')
+  logger.info(`Users found: ${result.rows.length}`)
   
   // cast vote
+  const transactions = []
+  for (let item in result.rows) {
+    const seed = result.rows[item].seed
+    
+    console.log(seed)
+    
+  }
   
 }
 
-fill()
+//fill()
+vote()
