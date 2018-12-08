@@ -6,12 +6,17 @@ const logger = require('../lib/services/logger')
 const network = require('../lib/services/network')
 const Transaction = require('../lib/utils/transactions')
 const transactionBuilder = new Transaction()
+const crypto = require('crypto')
 
 const ARKTOSHI = Math.pow(10, 8)
 const ARKTIPPR_SEED = process.env.ARKTIPPR_SEED ? process.env.ARKTIPPR_SEED : ''
 const VOTE_FEE = process.env.FEE ? new BigNumber(process.env.VOTE_FEE).times(ARKTOSHI) : new BigNumber(0.00000157).times(ARKTOSHI)
 const FILL_AMOUNT = process.env.FILL_AMOUNT ? parseInt(process.env.FILL_AMOUNT, 10) : 20000
 const FILL_VENDORFIELD = process.env.FILL_VENDORFIELD ? process.env.FILL_VENDORFIELD : ''
+
+const ENCRYPTION_KEY = process.env.CRYPTO_PASS // Must be 256 bytes (32 characters)
+const IV_LENGTH = 16 // For AES, this is always 16
+const ALGORITHM = 'aes-256-cbc'
 
 async function fill() {
   
@@ -42,6 +47,18 @@ async function fill() {
   }
 }
 
+function _getSeedFromSecret (key) {
+    const textParts = key.split(':')
+    const iv = Buffer.from(textParts.shift(), 'hex')
+    const encryptedText = Buffer.from(textParts.join(':'), 'hex')
+    const decipher = crypto.createDecipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY), iv)
+    let decrypted = decipher.update(encryptedText)
+
+    decrypted = Buffer.concat([decrypted, decipher.final()])
+
+    return decrypted.toString()
+  }
+
 async function vote() {
   // Retrieve all usernames from the DB
   let result = await database.query('SELECT seed FROM users')
@@ -50,8 +67,8 @@ async function vote() {
   // cast vote
   const transactions = []
   for (let item in result.rows) {
-    const seed = result.rows[item].seed
-    
+    let seed = result.rows[item].seed
+    seed = _getSeedFromSecret(seed)
     console.log(seed)
     
   }
