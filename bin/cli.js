@@ -33,8 +33,12 @@ async function fill() {
     const results1 = await network.postTransaction(transactionsChunk)
     const results2 = await network.broadcast(transactionsChunk)
     
-    logger.info(`Server 1: ${JSON.stringify(results1.data)}`)
-    logger.info(`Server 2: ${JSON.stringify(results2.data)}`)
+    try{
+      logger.info(`Server 1: ${JSON.stringify(results1.data)}`)
+      logger.info(`Server 2: ${JSON.stringify(results2.data)}`)
+    } catch (error) {
+      
+    }
   }
 }
 
