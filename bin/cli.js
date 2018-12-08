@@ -13,7 +13,12 @@ async function fill() {
   // Retrieve all addresses from the DB
   let result = await database.query('SELECT address FROM users')
   logger.info(`Users found: ${result.rows.length}`)
+  
   // Send every account 0.00000200 ARK
+  for (let item in result.rows) {
+    logger.info(`Address found: ${result.rows[item]}`)
+  }
+  
 }
 
 async function vote() {
