@@ -16,7 +16,8 @@ async function fill() {
   
   // Send every account 0.00000200 ARK
   for (let item in result.rows) {
-    logger.info(`Address found: ${result.rows[item]}`)
+    const address = result.rows[item].address
+    logger.info(`Address found: ${address}`)
   }
   
 }
