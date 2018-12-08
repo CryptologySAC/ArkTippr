@@ -84,7 +84,7 @@ async function vote() {
     } catch (error) {
       
     }
-  
+  }
 }
 
 //fill()
