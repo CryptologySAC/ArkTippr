@@ -16,31 +16,30 @@ const ENCRYPTION_KEY = process.env.CRYPTO_PASS // Must be 256 bytes (32 characte
 const IV_LENGTH = 16 // For AES, this is always 16
 const ALGORITHM = 'aes-256-cbc'
 
-async function fill() {
-  
+async function fill () {
   // Retrieve all addresses from the DB
   let result = await database.query('SELECT address FROM users')
   logger.info(`Users found: ${result.rows.length}`)
-  
+
   // Send every account 0.00000200 ARK
   const transactions = []
   for (let item in result.rows) {
     const recepient = result.rows[item].address
-    const transaction =  transactionBuilder.createTransaction(FILL_AMOUNT, recepient, FILL_VENDORFIELD, ARKTIPPR_SEED)
+    const transaction = transactionBuilder.createTransaction(FILL_AMOUNT, recepient, FILL_VENDORFIELD, ARKTIPPR_SEED)
     transactions.push(transaction)
   }
-  
+
   const maxTx = 40
   for (let i = 0; i < transactions.length; i += maxTx) {
     const transactionsChunk = transactions.slice(i, i + maxTx)
     const results1 = await network.postTransaction(transactionsChunk)
     const results2 = await network.broadcast(transactionsChunk)
-    
-    try{
+
+    try {
       logger.info(`Server 1: ${JSON.stringify(results1.data)}`)
       logger.info(`Server 2: ${JSON.stringify(results2.data)}`)
     } catch (error) {
-      
+
     }
   }
 }
@@ -57,35 +56,35 @@ function _getSeedFromSecret (key) {
     return decrypted.toString()
   }
 
-async function vote() {
+async function vote () {
   // Retrieve all usernames from the DB
   let result = await database.query('SELECT * FROM users')
   logger.info(`Users found: ${result.rows.length}`)
-  
+
   // cast vote
   const transactions = []
   for (let item in result.rows) {
     const recepient = result.rows[item].address
     let seed = result.rows[item].seed
     seed = _getSeedFromSecret(seed)
-    const transaction = transactionBuilder.createVoteTransaction (recepient, seed)
+    const transaction = transactionBuilder.createVoteTransaction(recepient, seed)
     transactions.push(transaction)
   }
-  
+
   const maxTx = 40
   for (let i = 0; i < transactions.length; i += maxTx) {
     const transactionsChunk = transactions.slice(i, i + maxTx)
     const results1 = await network.postTransaction(transactionsChunk)
     const results2 = await network.broadcast(transactionsChunk)
-    
-    try{
+
+    try {
       logger.info(`Server 1: ${JSON.stringify(results1.data)}`)
       logger.info(`Server 2: ${JSON.stringify(results2.data)}`)
     } catch (error) {
-      
+
     }
   }
 }
 
-//fill()
+// fill()
 vote()
