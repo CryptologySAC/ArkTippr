@@ -4,6 +4,7 @@ const database = require('../lib/services/database')
 const logger = require('../lib/services/logger')
 const network = require('../lib/services/network')
 const Transaction = require('../lib/utils/transactions')
+const User = require('../lib/platforms/reddit/user')
 const transactionBuilder = new Transaction()
 const crypto = require('crypto')
 
@@ -19,7 +20,10 @@ const ALGORITHM = 'aes-256-cbc'
 function create() {
   const accounts = require('../accounts.json')
   for (let item in accounts) {
-    console.log(accounts[item])
+    //console.log(accounts[item])
+    const user = new User(accounts[item])
+    const address = user.getAddress()
+    console.log(address)
   }
 }
 
