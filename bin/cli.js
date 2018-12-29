@@ -16,6 +16,13 @@ const ENCRYPTION_KEY = process.env.CRYPTO_PASS // Must be 256 bytes (32 characte
 const IV_LENGTH = 16 // For AES, this is always 16
 const ALGORITHM = 'aes-256-cbc'
 
+function create() {
+  const accounts = require('../accounts.json')
+  for (let item in accounts) {
+    console.log(accounts[item])
+  }
+}
+
 async function fill () {
   // Retrieve all addresses from the DB
   let result = await database.query('SELECT address FROM users')
@@ -87,4 +94,5 @@ async function vote () {
 }
 
 // fill()
-vote()
+//vote()
+create()
