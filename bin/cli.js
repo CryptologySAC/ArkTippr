@@ -23,7 +23,8 @@ async function create() {
     //console.log(accounts[item])
     const user = new User(accounts[item])
     const address = await user.getAddress()
-    console.log(address)
+    const balance = await user.getBalance(network)
+    console.log(`${address} ${balance}`)
   }
 }
 
