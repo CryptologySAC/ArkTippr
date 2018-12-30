@@ -25,7 +25,9 @@ async function create() {
     const user = new User(accounts[item])
     const address = await user.getAddress()
     const balance = await user.getBalance(mainnet)
-    console.log(`${address} ${balance}`)
+    if (parseInt(balance,10) === 0) {
+      console.log(`${address} ${balance} ${accounts[item]}`)
+    }
   }
 }
 
