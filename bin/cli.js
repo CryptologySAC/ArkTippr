@@ -81,10 +81,14 @@ async function vote () {
   const transactions = []
   for (let item in result.rows) {
     const recepient = result.rows[item].address
-    let seed = result.rows[item].seed
-    seed = _getSeedFromSecret(seed)
-    const transaction = transactionBuilder.createVoteTransaction(recepient, seed)
-    transactions.push(transaction)
+    const voted = await mainnet.getVoted(recepient)
+    if(!voted) {
+      logger.info(`Voting with ${recepient}`)
+      let seed = result.rows[item].seed
+      seed = _getSeedFromSecret(seed)
+      const transaction = transactionBuilder.createVoteTransaction(recepient, seed)
+      transactions.push(transaction)
+    }
   }
 
   const maxTx = 40
@@ -102,6 +106,18 @@ async function vote () {
   }
 }
 
-// fill()
-//vote()
-create()
+const args = process.argv.slice(2)
+if (args.length >= 1) {
+  switch (args[0]) {
+    case 'fill':
+      fill()
+      break
+    case 'create':
+      create()
+      break
+    default:
+      vote()
+  }
+} else {
+  vote()
+}
