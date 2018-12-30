@@ -7,6 +7,7 @@ const Transaction = require('../lib/utils/transactions')
 const User = require('../lib/platforms/reddit/user')
 const transactionBuilder = new Transaction()
 const crypto = require('crypto')
+const mainnet = require('../lib/utils/mainnet')
 
 const ARKTOSHI = Math.pow(10, 8)
 const ARKTIPPR_SEED = process.env.ARKTIPPR_SEED ? process.env.ARKTIPPR_SEED : ''
@@ -23,7 +24,7 @@ async function create() {
     //console.log(accounts[item])
     const user = new User(accounts[item])
     const address = await user.getAddress()
-    const balance = await user.getBalance(network)
+    const balance = await user.getBalance(mainnet)
     console.log(`${address} ${balance}`)
   }
 }
