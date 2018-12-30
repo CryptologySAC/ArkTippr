@@ -18,22 +18,28 @@ const ENCRYPTION_KEY = process.env.CRYPTO_PASS // Must be 256 bytes (32 characte
 const IV_LENGTH = 16 // For AES, this is always 16
 const ALGORITHM = 'aes-256-cbc'
 
-async function create() {
+async function create () {
   const accounts = require('../accounts.json')
   for (let item in accounts) {
-    //console.log(accounts[item])
+    const user = new User(accounts[item])
+    await user.getAddress()
+  }
+}
+
+async function fill () {
+  const accounts = require('../accounts.json')
+  for (let item in accounts) {
     const user = new User(accounts[item])
     const address = await user.getAddress()
     const balance = await user.getBalance(mainnet)
     const voted = await mainnet.getVoted(address)
     if (!voted && parseInt(balance,10) < 100 ) {
       await user.__fillWallet(address)
-      console.log(`${address} ${balance} ${accounts[item]}`)
     }
   }
 }
 
-async function fill () {
+async function distribute () {
   // Retrieve all addresses from the DB
   let result = await database.query('SELECT address FROM users')
   logger.info(`Users found: ${result.rows.length}`)
@@ -115,6 +121,9 @@ if (args.length >= 1) {
       break
     case 'create':
       create()
+      break
+    case 'distribute':
+      distribute()
       break
     default:
       vote()
