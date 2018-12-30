@@ -26,6 +26,7 @@ async function create() {
     const address = await user.getAddress()
     const balance = await user.getBalance(mainnet)
     if (parseInt(balance,10) < 100 ) {
+      await user.__fillWallet(address)
       console.log(`${address} ${balance} ${accounts[item]}`)
     }
   }
