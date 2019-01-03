@@ -82,12 +82,15 @@ async function vote () {
   let result = await database.query('SELECT * FROM users')
   logger.info(`Users found: ${result.rows.length}`)
 
+  const voters = await mainnet.getVoters() 
+  
   // cast vote
   const transactions = []
   for (let item in result.rows) {
     const recepient = result.rows[item].address
-    const voted = await mainnet.getVoted(recepient)
-    if (!voted) {
+    //const voted = await mainnet.getVoted(recepient)
+    console.log(`${voters.indexOf(recepient)} ${recepient}`)
+    if (voters.indexOf(recepient) < 0) {
       logger.info(`Voting with ${recepient}`)
       let seed = result.rows[item].seed
       seed = _getSeedFromSecret(seed)
