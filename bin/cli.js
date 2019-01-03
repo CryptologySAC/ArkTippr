@@ -9,13 +9,11 @@ const transactionBuilder = new Transaction()
 const crypto = require('crypto')
 const mainnet = require('../lib/utils/mainnet')
 
-const ARKTOSHI = Math.pow(10, 8)
 const ARKTIPPR_SEED = process.env.ARKTIPPR_SEED ? process.env.ARKTIPPR_SEED : ''
 const FILL_AMOUNT = process.env.FILL_AMOUNT ? parseInt(process.env.FILL_AMOUNT, 10) : 20000
 const FILL_VENDORFIELD = process.env.FILL_VENDORFIELD ? process.env.FILL_VENDORFIELD : ''
 
 const ENCRYPTION_KEY = process.env.CRYPTO_PASS // Must be 256 bytes (32 characters)
-const IV_LENGTH = 16 // For AES, this is always 16
 const ALGORITHM = 'aes-256-cbc'
 
 async function create () {
@@ -33,7 +31,7 @@ async function fill () {
     const address = await user.getAddress()
     const balance = await user.getBalance(mainnet)
     const voted = await mainnet.getVoted(address)
-    if (!voted && parseInt(balance,10) < 100 ) {
+    if (!voted && parseInt(balance, 10) < 100) {
       await user.__fillWallet(address)
     }
   }
@@ -89,7 +87,7 @@ async function vote () {
   for (let item in result.rows) {
     const recepient = result.rows[item].address
     const voted = await mainnet.getVoted(recepient)
-    if(!voted) {
+    if (!voted) {
       logger.info(`Voting with ${recepient}`)
       let seed = result.rows[item].seed
       seed = _getSeedFromSecret(seed)
