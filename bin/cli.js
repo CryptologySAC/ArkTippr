@@ -88,8 +88,6 @@ async function vote () {
   const transactions = []
   for (let item in result.rows) {
     const recepient = result.rows[item].address
-    //const voted = await mainnet.getVoted(recepient)
-    console.log(`${voters.indexOf(recepient)} ${recepient}`)
     if (voters.indexOf(recepient) < 0) {
       logger.info(`Voting with ${recepient}`)
       let seed = result.rows[item].seed
