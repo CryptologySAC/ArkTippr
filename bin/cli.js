@@ -82,8 +82,8 @@ async function vote () {
   let result = await database.query('SELECT * FROM users')
   logger.info(`Users found: ${result.rows.length}`)
 
-  const voters = await mainnet.getVoters() 
-  
+  const voters = await mainnet.getVoters()
+
   // cast vote
   const transactions = []
   for (let item in result.rows) {
